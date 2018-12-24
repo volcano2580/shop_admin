@@ -34,6 +34,7 @@
       text-color="#fff"
       active-text-color="#ffd04b"
        unique-opened
+       router
       >
 
       <el-submenu index="1">
@@ -42,7 +43,7 @@
           <span>用户管理</span>
         </template>
         <!-- 菜单项 -->
-       <el-menu-item index="1-1">
+       <el-menu-item index="/users">
       <i class="el-icon-menu"></i>
         <span slot="title">用户列表</span>
       </el-menu-item>
@@ -65,7 +66,10 @@
 
     </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 实现home的子路由的出口 -->
+        <router-view/>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -80,21 +84,25 @@
 */
 export default {
   methods: {
-    logout() {
-      // this.$confirm显示弹框
-       this.$confirm('你确定要退出系统吗?', '提示', {
+   async logout() {
+     try{
+       // this.$confirm显示弹框
+      await this.$confirm('你确定要退出系统吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        })
           this.$message.success('退出成功')
           // 删除token
           localStorage.removeItem('token')
           // 跳转到登录组件
           this.$router.push('/login')
-        }).catch(() => {
-          this.$message.success('取消退出')
-        });
+
+     }catch(e){
+       this.$message.info('取消退出')
+     }
+
+
     }
   }
 
